@@ -89,14 +89,9 @@ void myinit(void)
 
 void mouse(int btn, int state, int x, int y)
 {
-  /* switch (btn) {
-      case GLUT_RIGHT_BUTTON:
-         if (state == GLUT_UP)
-		exit(0);
-         break;
-   }*/
+
     	if(btn==GLUT_RIGHT_BUTTON && state==GLUT_UP)   exit(0);
-	if(btn==GLUT_RIGHT_BUTTON && state==GLUT_DOWN)   size = 6.0;
+	if(btn==GLUT_RIGHT_BUTTON && state==GLUT_DOWN)   size = 8.0;
 	if(btn==GLUT_MIDDLE_BUTTON && state==GLUT_DOWN)   size = 12.0;
 	if(btn==GLUT_LEFT_BUTTON && state==GLUT_DOWN)   size = 3.0;
 
@@ -110,7 +105,7 @@ void display(void)
 
 void quit(unsigned char key, int x, int y)
 {
-  if (key == 'q' || key == 'Q')
+  if (key == 'Q' || key == 'q')
     exit(0);
 }
 
