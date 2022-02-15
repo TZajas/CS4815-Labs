@@ -29,16 +29,22 @@
 #define DECREASE 5
 #define COLOUR 6
 #define QUIT 7
-
+#define WHITE 8
+#define RED 9
+#define GREEN 10
+#define BLUE 11
+#define HALF 12
+#define DOUBLE 13
 
 /*
  * Globals
  */
 int timer = 0;
+float speed = 0.090;
 float angle = 0;
 int rotate = 0;
 float direction = 1.0;
-
+float red=1.0, green=1.0, blue=1.0;
 void idle(void);
 
 
@@ -91,7 +97,7 @@ display(void)
     
     /* Calucate rotation (if enabled).  */
     if (rotate) {
-        angle += 0.090f * ((float) dt); /* 15 RPM */
+        angle += speed * ((float) dt); /* 15 RPM */
         if (angle >  360.0f) angle -= 360.0f;
     }
 
@@ -100,7 +106,7 @@ display(void)
     glRotatef(angle, 0.0f, 0.0f, direction);
 
     /* Draw rectangles.  */
-    glColor3f(1.0f, 1.0f, 1.0f);
+    glColor3f(red, green, blue);
     glRectf(-0.5f, -0.5f, 0.5f, 0.5f);
 
     float w = 1.0/20;
@@ -162,19 +168,32 @@ void processMenuEvents(int option) {
                 case REVERSE : direction = direction*(-1);  break;
                 case ANTICLOCKWISE : direction = 1; break;
                 case CLOCKWISE : direction = direction*(-1); break;
-                case INCREASE : ; break;
-                case DECREASE : ; break;
-                case COLOUR : ; break;
+                case INCREASE : speed += 0.045f ; break;
+                case DECREASE : speed -= 0.045f; break;
+		case HALF : speed = speed / 2; break;
+		case DOUBLE : speed = speed * 2; break;
+		case RED : red = 1.0; green = 0.0; blue = 0.0; break;
+                case GREEN : red = 0.0; green = 1.0; blue = 0.0; break;
+                case BLUE : red = 0.0; green = 0.0; blue = 1.0; break;
+                case WHITE : red = 1.0; green = 1.0; blue = 1.0; break;
 		case QUIT : exit(0); break;
         }
 }
 
 void createGLUTMenus() {
 
-        int menu,submenu1,submenu2;
+        int menu,submenu1,submenu2,submenu3;
+	
+	submenu3 = glutCreateMenu(processMenuEvents); 
+	glutAddMenuEntry("Red",RED);
+        glutAddMenuEntry("Blue",BLUE);
+        glutAddMenuEntry("Green",GREEN);
+
 
 	
 	submenu2 = glutCreateMenu(processMenuEvents); 
+	glutAddMenuEntry("Double speed",DOUBLE);
+        glutAddMenuEntry("Half speed",HALF); 
         glutAddMenuEntry("Increase speed",INCREASE);
         glutAddMenuEntry("Decrease speed",DECREASE); 
 
@@ -190,6 +209,7 @@ void createGLUTMenus() {
 	menu = glutCreateMenu(processMenuEvents);
 	glutAddSubMenu("Direction",submenu1);
         glutAddSubMenu("Speed",submenu2);
+	glutAddSubMenu("ColourRGB",submenu3);
 	glutAddMenuEntry("Quit",QUIT);
         glutAttachMenu(GLUT_RIGHT_BUTTON);
 
