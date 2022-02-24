@@ -166,8 +166,8 @@ void processMenuEvents(int option) {
 
         switch (option) {
                 case REVERSE : direction = direction*(-1);  break;
-                case ANTICLOCKWISE : direction = 1; break;
-                case CLOCKWISE : direction = direction*(-1); break;
+                case ANTICLOCKWISE :direction = 1; break;
+                case CLOCKWISE : direction = -1; break;
                 case INCREASE : speed += 0.045f ; break;
                 case DECREASE : speed -= 0.045f; break;
 		case HALF : speed = speed / 2; break;
