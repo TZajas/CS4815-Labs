@@ -1,10 +1,6 @@
 #include <GL/glut.h>
 #include <stdlib.h>
 #include <math.h>
-#if !defined(GLUT_WHEEL_UP)
-# define GLUT_WHEEL_UP 3
-# define GLUT_WHEEL_DOWN 4
-#endif
 
 /*  Set initial size of the display window.  */
 GLsizei winWidth = 600, winHeight = 600;  
@@ -13,10 +9,7 @@ GLsizei winWidth = 600, winHeight = 600;
 GLfloat xwcMin = -50.0, xwcMax = 50.0;
 GLfloat ywcMin = -50.0, ywcMax = 50.0;
 int downX, downY;
-int newX=0, newY=0;
-bool leftButton = false;
-float zoomIn = 1.2;
-float zoomOut = 0.8;
+bool leftButton = false, middleButton = false;
 
 class wcPt3D {
    public:
@@ -99,7 +92,7 @@ void displayFcn (void)
                  {10.0, -200.0, 0.0}, {40.0, 40.0, 0.0} };
 
    glPointSize (4);
-   glColor3f (1.0, 0.0, 0.0); //  Set point color to red.
+   glColor3f (1.0, 0.0, 0.0);      //  Set point color to red.
 
    bezier (ctrlPts, nCtrlPts, nBezCurvePts);
    glutSwapBuffers();
@@ -114,9 +107,6 @@ void winReshapeFcn (GLint newWidth, GLint newHeight)
 		glViewport (0, 0, newWidth, newWidth);
    }
 
-   winWidth = newWidth;
-   winHeight = newHeight;
-
    glMatrixMode (GL_PROJECTION);
    glLoadIdentity ( );
 
@@ -130,30 +120,16 @@ void MouseCallback(int button, int state, int x, int y)
   downX = x; downY = y;
   leftButton = ((button == GLUT_LEFT_BUTTON) && (state == GLUT_DOWN));
   glutPostRedisplay();
-	
-	if((button == GLUT_WHEEL_UP) && (glutGetModifiers()&&GLUT_ACTIVE_CTRL)){
-		glScalef(zoomIn,zoomIn,0.0);
-		glutPostRedisplay();
-	}
-	
-	if((button == GLUT_WHEEL_DOWN) && (glutGetModifiers()&&GLUT_ACTIVE_CTRL)){
-                glScalef(zoomOut,zoomOut,0.0);
-                glutPostRedisplay();
-        }
-
 }
- 
+
 void MotionCallback(int x, int y)
 {
-  newX +=  x-downX;
-  newY -= y-downY;
-  if (leftButton){
-	glViewport (newX, newY, winWidth, winHeight);//drag
-  }
-   // zoom
+  if (leftButton){}
+  
   downX = x;   downY = y; 
   glutPostRedisplay();
 }
+
 
 int main (int argc, char** argv)
 {
@@ -166,7 +142,6 @@ int main (int argc, char** argv)
    init ( );
    glutDisplayFunc (displayFcn);
    glutReshapeFunc (winReshapeFcn);
-   glutMouseFunc(MouseCallback);
-   glutMotionFunc(MotionCallback);
+
    glutMainLoop ( );
 }
