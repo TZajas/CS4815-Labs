@@ -180,8 +180,11 @@ void MouseCallback(int button, int state, int x, int y)
  
 void MotionCallback(int x, int y)
 {
-  if (leftButton){sphi+=(float)(x-downX)/4.0;stheta+=(float)(downY-y)/4.0;} // rotate
-  if (middleButton){sdepth += (float)(downY - y) / 10.0;  } // scale
+  if (leftButton){sphi+=(float)(x-downX)/4.0;
+		  stheta+=(float)(downY-y)/4.0;
+		 } // rotate
+  if (middleButton){sdepth += (float)(downY - y) / 10.0;  
+		   } // scale
   downX = x;   downY = y; 
   glutPostRedisplay();
 }
